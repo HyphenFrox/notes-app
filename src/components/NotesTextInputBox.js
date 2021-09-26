@@ -18,7 +18,8 @@ const PaperBox = styled(Paper)(({ theme }) => ({
   },
 }));
 
-const NotesTextInputBox = () => {
+const NotesTextInputBox = (props) => {
+  const { refetchNotes } = props;
   // input state
   const [noteInputValue, setNoteInputValue] = useState("");
   const handleNoteInputChange = (event) =>
@@ -37,10 +38,11 @@ const NotesTextInputBox = () => {
         await addNote(noteInputValue);
         setNoteInputValue("");
         setMessage({ type: "success", value: "Note added." });
+        refetchNotes();
       } catch (error) {
         setMessage({
           type: "error",
-          value: `Could not add note: ${error}`,
+          value: `Error while adding note: ${error}`,
         });
       }
     } else {
@@ -66,7 +68,7 @@ const NotesTextInputBox = () => {
           console.log(error);
         }
       }
-    }, 5000);
+    }, 4000);
     return () => clearInterval(messageCleanupFunction);
   });
   //
@@ -112,6 +114,7 @@ const NotesTextInputBox = () => {
           variant="subtitle"
           sx={{
             marginTop: "1em",
+            fontWeight: 500,
             color: (theme) =>
               message.type === "info"
                 ? theme.palette.info.main
