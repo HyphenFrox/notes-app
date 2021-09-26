@@ -4,6 +4,8 @@ import { styled } from "@mui/system";
 
 //
 import NotesTextInputBox from "../components/NotesTextInputBox";
+import NotesList from "../components/NotesList";
+import useFetchNotes from "../utilities/useFetchNotes";
 //
 
 const App = styled("div")(({ theme }) => ({
@@ -15,12 +17,21 @@ const App = styled("div")(({ theme }) => ({
 }));
 
 function Homepage() {
+  const { notesFetchStatus, notesFetchError, notesList, refetchNotes } =
+    useFetchNotes();
+
   return (
     <App>
       <Typography variant="h1" align="center" sx={{ fontSize: "2rem" }}>
         Notes App
       </Typography>
-      <NotesTextInputBox></NotesTextInputBox>
+      <NotesTextInputBox refetchNotes={refetchNotes}></NotesTextInputBox>
+      <NotesList
+        notesFetchStatus={notesFetchStatus}
+        notesFetchError={notesFetchError}
+        notesList={notesList}
+        refetchNotes={refetchNotes}
+      ></NotesList>
     </App>
   );
 }
